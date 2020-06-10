@@ -23,20 +23,8 @@ func Enqueue(conn *amqp.Connection, queue, body string) error {
 	}
 	defer ch.Close()
 
-	if err := ch.ExchangeDeclare(
-		queue,
-		amqp.ExchangeTopic,
-		true,
-		false,
-		false,
-		false,
-		nil,
-	); err != nil {
-		return err
-	}
-
 	return ch.Publish(
-		queue,
+		"exchange."+queue,
 		queue+".*",
 		false,
 		false,
